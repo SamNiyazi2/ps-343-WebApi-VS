@@ -1,19 +1,20 @@
+using CourseLibrary.API.DbContexts;
+using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ps_343_webAPI
+namespace CourseLibrary.API
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,6 +26,22 @@ namespace ps_343_webAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<ICourseLibraryRepository, CourseLibraryRepository>();
+
+            // 02/26/2022 04:11 am - SSN - [20220226-0348] - [002] - M02-05 Demo - Creating an API project
+            // databaseConnectionString
+            string databaseConnectionString = Environment.GetEnvironmentVariable("ps-343-connectionstring");
+
+            if (string.IsNullOrWhiteSpace(databaseConnectionString))
+            {
+                throw new Exception("\n\nps-343-webApp:Startup: Environment variable 'ps-343-connectionstring' is not defined.\n\n");
+            }
+
+            services.AddDbContext<CourseLibraryContext>(options =>
+            {
+                options.UseSqlServer(databaseConnectionString);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

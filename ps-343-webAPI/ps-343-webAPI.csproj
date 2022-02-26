@@ -5,5 +5,14 @@
     <RootNamespace>ps_343_webAPI</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore" Version="3.1.0" />
+    <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="3.1.0" />
+    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 
 </Project>
