@@ -51,7 +51,7 @@ namespace ps_343_webAPI.Controllers
 
             if (!Guid.TryParse(authorId_string, out Guid authorId))
             {
-                return BadRequest( );
+                return BadRequest();
             }
 
             var author = CourseLibraryRepository.GetAuthor(authorId);
