@@ -24,7 +24,7 @@ namespace ps_343_webAPI.Controllers
         {
             CourseLibraryRepository = courseLibraryRepository;
 
-            if ( courseLibraryRepository == null)
+            if (courseLibraryRepository == null)
             {
                 string errorMessage = "PS-343-WebAPI-AuthorsController: Injected CourseLibaryRepository is null.";
                 logger.LogCritical(errorMessage);
@@ -32,45 +32,22 @@ namespace ps_343_webAPI.Controllers
             }
         }
 
-        [HttpGet("/GetAuthors2")]
-        [Route("GetAuthors3")]
-        public IActionResult GetAuthors()
+
+        [HttpGet]
+        public IActionResult Get()
         {
             var authors = CourseLibraryRepository.GetAuthors();
             return new JsonResult(authors);
         }
 
 
-        // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("{authorId:guid}")]
+        public IActionResult Get(Guid authorId)
         {
-            return new string[] { "value1", "value2" };
+            var authors = CourseLibraryRepository.GetAuthor(authorId);
+            return new JsonResult(authors);
         }
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<ValuesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
