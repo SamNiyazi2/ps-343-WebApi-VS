@@ -1,6 +1,8 @@
-﻿using CourseLibrary.API.Services;
+﻿using CourseLibrary.API.Entities;
+using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ps_343_webAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +39,17 @@ namespace ps_343_webAPI.Controllers
         public IActionResult Get()
         {
             var authors = CourseLibraryRepository.GetAuthors();
+
+            // 02/27/2022 12:54 pm - SSN - [20220227-1251] - [002] - M04-03 - Separating entity model and outer facing model
+            var authorDTOs = new List<AuthorDTO>();
+
+            foreach (Author author in authors.OrderBy(r => r.DateOfBirth))
+            {
+                authorDTOs.Add(AuthorDTO.GetDTO(author));
+            }
             // return new JsonResult(authors);
-            return Ok(authors);
+            // return Ok(authors);
+            return Ok(authorDTOs);
         }
 
 
