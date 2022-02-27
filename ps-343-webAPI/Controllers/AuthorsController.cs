@@ -37,15 +37,28 @@ namespace ps_343_webAPI.Controllers
         public IActionResult Get()
         {
             var authors = CourseLibraryRepository.GetAuthors();
-            return new JsonResult(authors);
+            // return new JsonResult(authors);
+            return Ok(authors);
         }
 
 
-        [HttpGet("{authorId:guid}")]
-        public IActionResult Get(Guid authorId)
+        //[HttpGet("{authorId:guid}")]
+        [HttpGet("{authorId_string}")]
+        //        public IActionResult Get(Guid authorId)
+        public IActionResult Get(string authorId_string)
         {
-            var authors = CourseLibraryRepository.GetAuthor(authorId);
-            return new JsonResult(authors);
+            // 02/26/2022 09:17 pm - SSN - [20220226-2114] - [001] - M03-10 - Demo - returning correct status codes
+
+            if (!Guid.TryParse(authorId_string, out Guid authorId))
+            {
+                return BadRequest( );
+            }
+
+            var author = CourseLibraryRepository.GetAuthor(authorId);
+
+            if (author == null) return NotFound();
+
+            return Ok(author);
         }
 
 
