@@ -12,7 +12,12 @@ namespace CourseLibrary.API.Services
         void UpdateCourse(Course course);
         void DeleteCourse(Course course);
         IEnumerable<Author> GetAuthors();
+        
+        // 02/28/2022 07:51 am - SSN - [20220228-0739] - [003] - M05-04 - Demo: Filter resource collection
+        IEnumerable<Author> GetAuthors(string mainCategory);
+
         Author GetAuthor(Guid authorId);
+        
         IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
         void AddAuthor(Author author);
         void DeleteAuthor(Author author);

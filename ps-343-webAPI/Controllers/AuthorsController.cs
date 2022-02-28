@@ -42,9 +42,12 @@ namespace ps_343_webAPI.Controllers
         [HttpHead]
         // 02/27/2022 06:57 pm - SSN - [20220227-1856] - [001] - M04-04 - Demo: Improving action return type with ActionResult<T>
         //public IActionResult Get()
-        public ActionResult<IEnumerable<AuthorDTO>> Get()
+
+        // 02/28/2022 07:46 am - SSN - [20220228-0739] - [002] - M05-04 - Demo: Filter resource collection
+        // Add mainCategory filter
+        public ActionResult<IEnumerable<AuthorDTO>> GetAuthors(string mainCategory)
         {
-            var authors = CourseLibraryRepository.GetAuthors();
+            var authors = CourseLibraryRepository.GetAuthors(mainCategory);
 
 
             // 02/27/2022 07:34 pm - SSN - [20220227-1917] - [001] - M04-06 - Demo: Using AutoMapper
@@ -69,7 +72,7 @@ namespace ps_343_webAPI.Controllers
         //[HttpGet("{authorId:guid}")]
         [HttpGet("{authorId_string}")]
         //        public IActionResult Get(Guid authorId)
-        public IActionResult Get(string authorId_string)
+        public IActionResult GetAuthor(string authorId_string)
         {
             // 02/26/2022 09:17 pm - SSN - [20220226-2114] - [001] - M03-10 - Demo - returning correct status codes
 
@@ -88,5 +91,8 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+
     }
+
 }
+
