@@ -16,15 +16,17 @@ namespace ps_343_webAPI.Models
         public int Age { get; set; }
         public string MainCategory { get; set; }
 
-        public static AuthorDTO GetDTO(Author author)
-        {
-            return new AuthorDTO
-            {
-                Id = author.Id,
-                Name = $"{author.FirstName} {author.LastName}",
-                Age = author.DateOfBirth.GetAge(),
-                MainCategory = author.MainCategory
-            };
-        }
+
+        // 02/27/2022 08:02 pm - SSN - [20220227-1917] - [002] - M04-06 - Demo: Using AutoMapper
+        //public static AuthorDTO GetDTO(Author author)
+        //{
+        //    return new AuthorDTO
+        //    {
+        //        Id = author.Id,
+        //        Name = $"{author.FirstName} {author.LastName}",
+        //        Age = author.DateOfBirth.GetAge(),
+        //        MainCategory = author.MainCategory
+        //    };
+        //}
     }
 }

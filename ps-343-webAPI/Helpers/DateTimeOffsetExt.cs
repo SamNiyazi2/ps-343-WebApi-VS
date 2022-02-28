@@ -15,7 +15,7 @@ namespace ps_343_webAPI.Helpers
 
             int age = today.Year - date.Year;
 
-            if (today.Month > date.Month && today.Day > date.Day)
+            if (date.Month >= today.Month && date.Day > today.Day)
             {
                 age--;
             }

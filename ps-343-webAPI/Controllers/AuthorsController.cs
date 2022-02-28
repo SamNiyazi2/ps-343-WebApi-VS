@@ -1,4 +1,5 @@
-﻿using CourseLibrary.API.Entities;
+﻿using AutoMapper;
+using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,12 +21,14 @@ namespace ps_343_webAPI.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        public ICourseLibraryRepository CourseLibraryRepository { get; }
+        private readonly IMapper mapper;
+        private readonly ICourseLibraryRepository CourseLibraryRepository;
 
-        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, ILogger<AuthorsController> logger)
+
+        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, ILogger<AuthorsController> logger, IMapper mapper)
         {
             CourseLibraryRepository = courseLibraryRepository;
-
+            this.mapper = mapper;
             if (courseLibraryRepository == null)
             {
                 string errorMessage = "PS-343-WebAPI-AuthorsController: Injected CourseLibaryRepository is null.";
@@ -42,16 +45,23 @@ namespace ps_343_webAPI.Controllers
         {
             var authors = CourseLibraryRepository.GetAuthors();
 
-            // 02/27/2022 12:54 pm - SSN - [20220227-1251] - [002] - M04-03 - Separating entity model and outer facing model
-            var authorDTOs = new List<AuthorDTO>();
 
-            foreach (Author author in authors.OrderBy(r => r.DateOfBirth))
-            {
-                authorDTOs.Add(AuthorDTO.GetDTO(author));
-            }
-            // return new JsonResult(authors);
-            // return Ok(authors);
-            return Ok(authorDTOs);
+            // 02/27/2022 07:34 pm - SSN - [20220227-1917] - [001] - M04-06 - Demo: Using AutoMapper
+
+            //// 02/27/2022 12:54 pm - SSN - [20220227-1251] - [002] - M04-03 - Separating entity model and outer facing model
+            //var authorDTOs = new List<AuthorDTO>();
+
+            //foreach (Author author in authors.OrderBy(r => r.DateOfBirth))
+            //{
+            //    authorDTOs.Add(AuthorDTO.GetDTO(author));
+            //}
+            //// return new JsonResult(authors);
+            //// return Ok(authors);
+            //return Ok(authorDTOs);
+
+            return Ok(mapper.Map<IEnumerable<AuthorDTO>>(authors.OrderBy(r => r.DateOfBirth)));
+
+
         }
 
 
@@ -71,7 +81,9 @@ namespace ps_343_webAPI.Controllers
 
             if (author == null) return NotFound();
 
-            return Ok(author);
+            // 02/27/2022 08:03 pm - SSN - [20220227-1917] - [003] - M04-06 - Demo: Using AutoMapper
+            // return Ok(author);
+            return Ok(mapper.Map<AuthorDTO>(author));
         }
 
 
