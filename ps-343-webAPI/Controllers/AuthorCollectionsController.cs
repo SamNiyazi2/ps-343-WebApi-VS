@@ -2,6 +2,7 @@
 using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using ps_343_webAPI.Helpers;
 using ps_343_webAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,34 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+        // 02/28/2022 05:09 pm - SSN - [20220228-1706] - [001] - M06-07 - Demo: Working with array keys and composite keys
+        [HttpGet("({ids})", Name = "GetAuthorCollection")]
+
+        public IActionResult GetAuthorCollection(
+            [FromRoute]
+            [ModelBinder(BinderType = typeof(ArrayModelBinder))]
+            IEnumerable<Guid> ids)
+        {
+
+            if (ids == null)
+            {
+                return BadRequest();
+            }
+
+            var authorEntities = courseLibraryRepository.GetAuthors(ids);
+
+            if (ids.Count() != authorEntities.Count())
+            {
+                return NotFound();
+            }
+
+            var authorsToReturn = mapper.Map<IEnumerable<AuthorDTO>>(authorEntities);
+
+            return Ok(authorsToReturn);
+
+        }
+
+
         // GET: api/<AuthorCollectionController>
         [HttpPost]
         public ActionResult<IEnumerable<AuthorDTO>> CreateAuthorCollection(IEnumerable<AuthorCreateDTO> authorCollection)
@@ -43,7 +72,11 @@ namespace ps_343_webAPI.Controllers
 
             courseLibraryRepository.Save();
 
-            return Ok();
+            var authorCollectionToReturn = mapper.Map<IEnumerable<AuthorDTO>>(authorEntities);
+
+            var idsAsString = string.Join(",", authorCollectionToReturn.Select(a => a.Id));
+
+            return CreatedAtRoute("GetAuthorCollection", new { ids = idsAsString }, authorCollectionToReturn);
 
         }
 
