@@ -45,9 +45,11 @@ namespace ps_343_webAPI.Controllers
 
         // 02/28/2022 07:46 am - SSN - [20220228-0739] - [002] - M05-04 - Demo: Filter resource collection
         // Add mainCategory filter
-        public ActionResult<IEnumerable<AuthorDTO>> GetAuthors(string mainCategory)
+        // 02/28/2022 08:19 am - SSN - [20220228-0807] - [003] - M05-05 - Demo: Searching through resource collection
+        // Add searchQuery
+        public ActionResult<IEnumerable<AuthorDTO>> GetAuthors(string mainCategory, string searchQuery)
         {
-            var authors = CourseLibraryRepository.GetAuthors(mainCategory);
+            var authors = CourseLibraryRepository.GetAuthors(mainCategory, searchQuery);
 
 
             // 02/27/2022 07:34 pm - SSN - [20220227-1917] - [001] - M04-06 - Demo: Using AutoMapper

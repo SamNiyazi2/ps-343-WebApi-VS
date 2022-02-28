@@ -1,5 +1,6 @@
 ﻿using CourseLibrary.API.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace CourseLibrary.API.DbContexts
@@ -109,5 +110,16 @@ namespace CourseLibrary.API.DbContexts
 
             base.OnModelCreating(modelBuilder);
         }
+
+
+        // 02/28/2022 08:32 am - SSN - [20220228-0807] - [004] - M05-05 - Demo: Searching through resource collection
+        // https://docs.microsoft.com/en-us/ef/core/logging-events-diagnostics/extensions-logging?tabs=v3
+        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+        }
+
     }
 }

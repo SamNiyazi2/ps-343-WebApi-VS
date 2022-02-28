@@ -137,14 +137,38 @@ namespace CourseLibrary.API.Services
 
 
         // 02/28/2022 07:43 am - SSN - [20220228-0739] - [001] - M05-04 - Demo: Filter resource collection
-        public IEnumerable<Author> GetAuthors(string mainCategory)
+        // Add mainCategory filter
+        // 02/28/2022 08:12 am - SSN - [20220228-0807] - [001] - M05-05 - Demo: Searching through resource collection
+        // Add searchQuery
+        public IEnumerable<Author> GetAuthors(string mainCategory, string searchQuery)
         {
-            if (string.IsNullOrWhiteSpace(mainCategory))
+            if (string.IsNullOrWhiteSpace(mainCategory) && string.IsNullOrWhiteSpace(searchQuery))
             {
                 return GetAuthors();
             }
 
-            return GetAuthors().Where(a => a.MainCategory.ToUpper() == mainCategory.ToUpper())
+            var collection = _context.Authors as IQueryable<Author>;
+
+            if (!string.IsNullOrWhiteSpace(mainCategory))
+            {
+                collection = collection.Where(r => r.MainCategory.ToUpper() == mainCategory.ToUpper());
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                collection = collection.Where(r =>
+                r.LastName.ToUpper().Contains(searchQuery.ToUpper())
+                ||
+                r.FirstName.ToUpper().Contains(searchQuery.ToUpper())
+                ||
+                searchQuery.ToUpper().Contains(r.FirstName.ToUpper())
+                ||
+                searchQuery.ToUpper().Contains(r.LastName.ToUpper())
+
+                );
+            }
+
+            return collection
                 .OrderBy(a => a.FirstName)
                 .OrderBy(a => a.LastName)
                 .ToList();
