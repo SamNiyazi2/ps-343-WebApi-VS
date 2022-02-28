@@ -103,7 +103,7 @@ namespace ps_343_webAPI.Controllers
         public ActionResult<AuthorCreateDTO> CreateAuthor(AuthorCreateDTO newAuthor)
         {
             // No deedn to check for nulls. Checked by the APIController.
-  
+
             var authorEntity = mapper.Map<Author>(newAuthor);
             CourseLibraryRepository.AddAuthor(authorEntity);
             CourseLibraryRepository.Save();

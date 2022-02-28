@@ -19,5 +19,11 @@ namespace ps_343_webAPI.Models
 
         public string MainCategory { get; set; }
 
+
+        // 02/28/2022 03:49 pm - SSN - [20220228-1546] - [001] - M06-05 - Creating child resources together with a parent resource
+
+        public ICollection<CourseCreateDTO> Courses { get; set; } = new List<CourseCreateDTO>();
+
+
     }
 }
