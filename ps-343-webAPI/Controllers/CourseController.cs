@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using ps_343_webAPI.Models;
@@ -48,7 +49,7 @@ namespace ps_343_webAPI.Controllers
 
         // GET: api/<CourseController>
         // 02/27/2022 11:14 pm - SSN - [20220227-2313] - [001] - M04-08 - Demo: Return a single child resource
-        [Route("{courseId_string}")]
+        [Route("{courseId_string}", Name = "GetCourse")]
         [HttpGet]
         public ActionResult<CourseDTO> Get(string authorId_string, string courseId_string)
         {
@@ -79,6 +80,33 @@ namespace ps_343_webAPI.Controllers
 
             return Ok(mapper.Map<CourseDTO>(course));
         }
+
+
+        // 02/28/2022 12:51 pm - SSN - [20220228-1241] - [001] - M06-04 - Demo: Creating a child resource
+        [HttpPost]
+        public ActionResult<CourseDTO> CreateCourseForAuthor(string authorId_string, CourseCreateDTO newCourse)
+        {
+            if (!Guid.TryParse(authorId_string, out Guid authorId))
+            {
+                return BadRequest();
+            }
+
+            if (!courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var courseEntity = mapper.Map<Course>(newCourse);
+            courseLibraryRepository.AddCourse(authorId, courseEntity);
+            courseLibraryRepository.Save();
+
+            var courseToReturn = mapper.Map<CourseDTO>(courseEntity);
+            return CreatedAtRoute("GetCourse", new { authorId_string = authorId_string, courseId_string = courseToReturn.Id }, courseToReturn);
+
+
+        }
+
+
 
     }
 }

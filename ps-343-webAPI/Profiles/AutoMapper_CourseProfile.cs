@@ -15,6 +15,8 @@ namespace ps_343_webAPI.Profiles
         public AutoMapper_CourseProfile()
         {
             CreateMap<Course, CourseDTO>();
+            CreateMap<CourseCreateDTO, Course>();
+
         }
 
     }

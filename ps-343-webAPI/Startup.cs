@@ -49,6 +49,7 @@ namespace CourseLibrary.API
 
             // 02/26/2022 04:11 am - SSN - [20220226-0348] - [002] - M02-05 Demo - Creating an API project
             // databaseConnectionString
+            // c:>setx ps-343-connectionstring = "<ConnectionString>"
             string databaseConnectionString = Environment.GetEnvironmentVariable("ps-343-connectionstring");
 
             if (string.IsNullOrWhiteSpace(databaseConnectionString))
