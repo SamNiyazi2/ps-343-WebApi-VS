@@ -36,7 +36,9 @@ namespace ps_343_webAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult Get()
+        // 02/27/2022 06:57 pm - SSN - [20220227-1856] - [001] - M04-04 - Demo: Improving action return type with ActionResult<T>
+        //public IActionResult Get()
+        public ActionResult<IEnumerable<AuthorDTO>> Get()
         {
             var authors = CourseLibraryRepository.GetAuthors();
 
