@@ -69,6 +69,17 @@ namespace CourseLibrary.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                // 02/27/2022 11:54 pm - SSN - [20220227-2336] - [001] - M04-09 - Demo: Handling faults
+                app.UseExceptionHandler(builder =>
+                   {
+                       builder.Run(async context =>
+                       {
+                           await context.Response.WriteAsync("20220227-2357: ps-343-webAPI - Unexpected error.  Please try again later.");
+                       });
+                   });
+            }
 
             app.UseRouting();
 
