@@ -76,6 +76,7 @@ namespace CourseLibrary.API
                    {
                        builder.Run(async context =>
                        {
+                           // Need to log error.
                            await context.Response.WriteAsync("20220227-2357: ps-343-webAPI - Unexpected error.  Please try again later.");
                        });
                    });

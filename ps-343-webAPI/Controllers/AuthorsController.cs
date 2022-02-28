@@ -76,9 +76,10 @@ namespace ps_343_webAPI.Controllers
 
 
         //[HttpGet("{authorId:guid}")]
-        [HttpGet("{authorId_string}")]
+        [HttpGet("{authorId_string}", Name = "GetAuthor")]
         //        public IActionResult Get(Guid authorId)
-        public IActionResult GetAuthor(string authorId_string)
+        // public IActionResult GetAuthor(string authorId_string)
+        public ActionResult<AuthorDTO> GetAuthor(string authorId_string)
         {
             // 02/26/2022 09:17 pm - SSN - [20220226-2114] - [001] - M03-10 - Demo - returning correct status codes
 
@@ -97,7 +98,24 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+        // 02/28/2022 10:49 am - SSN - [20220228-1037] - [001] - M06-03 - Demo: Creating a resource
+        [HttpPost]
+        public ActionResult<AuthorCreateDTO> CreateAuthor(AuthorCreateDTO newAuthor)
+        {
+            // No deedn to check for nulls. Checked by the APIController.
+  
+            var authorEntity = mapper.Map<Author>(newAuthor);
+            CourseLibraryRepository.AddAuthor(authorEntity);
+            CourseLibraryRepository.Save();
 
+            var authorToReturn = mapper.Map<AuthorDTO>(authorEntity);
+
+            return CreatedAtRoute("GetAuthor",
+                new { authorId_string = authorToReturn.Id.ToString() },
+                authorToReturn
+                );
+
+        }
     }
 
 }

@@ -23,6 +23,11 @@ namespace ps_343_webAPI.Profiles
                     dest => dest.Age,
                     opt => opt.MapFrom(src => src.DateOfBirth.GetAge()));
 
+            
+            // 02/28/2022 10:57 am - SSN - [20220228-1037] - [003] - M06-03 - Demo: Creating a resource
+            CreateMap<AuthorCreateDTO, Author>();
+
+
         }
     }
 

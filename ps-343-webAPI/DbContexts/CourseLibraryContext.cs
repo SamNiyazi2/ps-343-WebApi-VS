@@ -118,7 +118,11 @@ namespace CourseLibrary.API.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+            string isDevelopment_string = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")??"";
+            
+            bool isDevelopment = isDevelopment_string.Trim().ToLower() == "development";
+
+            if (isDevelopment) optionsBuilder.UseLoggerFactory(MyLoggerFactory);
         }
 
     }
