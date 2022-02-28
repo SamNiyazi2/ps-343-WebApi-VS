@@ -4,6 +4,7 @@ using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ps_343_webAPI.Models;
+using ps_343_webAPI.ResourceParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,9 +48,12 @@ namespace ps_343_webAPI.Controllers
         // Add mainCategory filter
         // 02/28/2022 08:19 am - SSN - [20220228-0807] - [003] - M05-05 - Demo: Searching through resource collection
         // Add searchQuery
-        public ActionResult<IEnumerable<AuthorDTO>> GetAuthors(string mainCategory, string searchQuery)
+        // 02/28/2022 10:02 am - SSN - [20220228-0958] - [002] - M05-07 - Demo: Group action parameters together into one object
+        // Replace parameters with AuthorResourceParameters
+        // 415 unsupported media type if [FromQuery] is not set. Complext data type defaut for form.
+        public ActionResult<IEnumerable<AuthorDTO>> GetAuthors([FromQuery] AuthorResourceParameters authorResourceParameters)
         {
-            var authors = CourseLibraryRepository.GetAuthors(mainCategory, searchQuery);
+            var authors = CourseLibraryRepository.GetAuthors(authorResourceParameters);
 
 
             // 02/27/2022 07:34 pm - SSN - [20220227-1917] - [001] - M04-06 - Demo: Using AutoMapper

@@ -1,5 +1,6 @@
 ﻿using CourseLibrary.API.DbContexts;
 using CourseLibrary.API.Entities;
+using ps_343_webAPI.ResourceParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,30 +141,40 @@ namespace CourseLibrary.API.Services
         // Add mainCategory filter
         // 02/28/2022 08:12 am - SSN - [20220228-0807] - [001] - M05-05 - Demo: Searching through resource collection
         // Add searchQuery
-        public IEnumerable<Author> GetAuthors(string mainCategory, string searchQuery)
+        // 02/28/2022 10:04 am - SSN - [20220228-0958] - [004] - M05-07 - Demo: Group action parameters together into one object
+        //public IEnumerable<Author> GetAuthors(string mainCategory, string searchQuery)
+        public IEnumerable<Author> GetAuthors(AuthorResourceParameters authorResourceParameters)
         {
-            if (string.IsNullOrWhiteSpace(mainCategory) && string.IsNullOrWhiteSpace(searchQuery))
+            if (authorResourceParameters == null)
+            {
+                throw new ArgumentNullException($"20220228-1005-ps-343-webAPI {nameof(authorResourceParameters)}");
+            }
+
+            if (string.IsNullOrWhiteSpace(authorResourceParameters.MainCategory) && string.IsNullOrWhiteSpace(authorResourceParameters.SearchQuery))
             {
                 return GetAuthors();
             }
 
             var collection = _context.Authors as IQueryable<Author>;
 
-            if (!string.IsNullOrWhiteSpace(mainCategory))
+            if (!string.IsNullOrWhiteSpace(authorResourceParameters.MainCategory))
             {
-                collection = collection.Where(r => r.MainCategory.ToUpper() == mainCategory.ToUpper());
+                authorResourceParameters.MainCategory = authorResourceParameters.MainCategory.Trim();
+                collection = collection.Where(r => r.MainCategory.ToUpper() == authorResourceParameters.MainCategory.ToUpper());
             }
 
-            if (!string.IsNullOrWhiteSpace(searchQuery))
+            if (!string.IsNullOrWhiteSpace(authorResourceParameters.SearchQuery))
             {
+                authorResourceParameters.SearchQuery = authorResourceParameters.SearchQuery.Trim();
+
                 collection = collection.Where(r =>
-                r.LastName.ToUpper().Contains(searchQuery.ToUpper())
-                ||
-                r.FirstName.ToUpper().Contains(searchQuery.ToUpper())
-                ||
-                searchQuery.ToUpper().Contains(r.FirstName.ToUpper())
-                ||
-                searchQuery.ToUpper().Contains(r.LastName.ToUpper())
+                        r.LastName.ToUpper().Contains(authorResourceParameters.SearchQuery.ToUpper())
+                        ||
+                        r.FirstName.ToUpper().Contains(authorResourceParameters.SearchQuery.ToUpper())
+                        ||
+                        authorResourceParameters.SearchQuery.ToUpper().Contains(r.FirstName.ToUpper())
+                        ||
+                        authorResourceParameters.SearchQuery.ToUpper().Contains(r.LastName.ToUpper())
 
                 );
             }

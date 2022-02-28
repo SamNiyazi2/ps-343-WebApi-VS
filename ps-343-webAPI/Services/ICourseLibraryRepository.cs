@@ -1,4 +1,5 @@
 ﻿using CourseLibrary.API.Entities;
+using ps_343_webAPI.ResourceParameters;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,9 @@ namespace CourseLibrary.API.Services
         // Add mainCategory
         // 02/28/2022 08:18 am - SSN - [20220228-0807] - [002] - M05-05 - Demo: Searching through resource collection
         // Add searchQUery
-        IEnumerable<Author> GetAuthors(string mainCategory, string searchQuery);
+        // IEnumerable<Author> GetAuthors(string mainCategory, string searchQuery);
+        // 02/28/2022 10:04 am - SSN - [20220228-0958] - [003] - M05-07 - Demo: Group action parameters together into one object
+        IEnumerable<Author> GetAuthors(AuthorResourceParameters authorResourceParameters);
 
         Author GetAuthor(Guid authorId);
 
