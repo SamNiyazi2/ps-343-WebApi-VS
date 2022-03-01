@@ -107,6 +107,42 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+        // 03/01/2022 05:03 pm - SSN - [20220301-1703] - [001] - M08-03 - Demo: Updating a resource (Part1)
+        [HttpPut("{courseId_string}")]
+        public ActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
+        {
+
+            if (string.IsNullOrWhiteSpace(authorId_string) || string.IsNullOrWhiteSpace(courseId_string))
+            {
+                return BadRequest();
+            }
+
+            if (!Guid.TryParse(authorId_string, out Guid authorId) || !Guid.TryParse(courseId_string, out Guid courseId))
+            {
+                return BadRequest();
+            }
+
+            var courseEntity = courseLibraryRepository.GetCourse(authorId, courseId);
+
+            if (courseEntity == null)
+            {
+                return NotFound();
+
+            }
+
+            mapper.Map(updatedCourse, courseEntity);
+
+            courseLibraryRepository.UpdateCourse(courseEntity);
+            courseLibraryRepository.Save();
+
+            return NoContent();
+
+
+        }
 
     }
+
+
+
 }
+
