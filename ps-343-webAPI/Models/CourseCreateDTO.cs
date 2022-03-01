@@ -20,10 +20,10 @@ namespace ps_343_webAPI.Models
         // 03/01/2022 01:59 pm - SSN - [20220301-1246] - [001] - M07-03 - Demo: Validating input with data annotations
 
         [Required(ErrorMessage = "Title is required (20220301-1502)")]
-        [MaxLength(100, ErrorMessage = "Title should not be longer than 100 characters.")]
+        [MaxLength(100, ErrorMessage = "Title should not be longer than {1} characters.")]
         public string Title { get; set; }
 
-        [MaxLength(1500, ErrorMessage = "Description should not be longer than 1500 characters.")]
+        [MaxLength(1500, ErrorMessage = "Description should not be longer than {1} characters.")]
         public string Description { get; set; }
 
 

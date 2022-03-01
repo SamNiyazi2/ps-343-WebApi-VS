@@ -4,6 +4,8 @@ using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 //using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,51 @@ namespace CourseLibrary.API
            })
                 // Ad of 2.2, use:
                 .AddXmlDataContractSerializerFormatters()
+
+                // 03/01/2022 03:27 pm - SSN - [20220301-1526] - [001] - M07-09 - Demo: Customizing validation error responses
+                .ConfigureApiBehaviorOptions(config =>
+                    {
+                        config.InvalidModelStateResponseFactory = context =>
+                        {
+                            var problemDetailsFactory = context.HttpContext.RequestServices
+                                    .GetRequiredService<ProblemDetailsFactory>();
+
+                            var problemDetails = problemDetailsFactory.CreateValidationProblemDetails(
+                                                        context.HttpContext,
+                                                        context.ModelState
+                                                        );
+                            problemDetails.Detail = "See the errors field for defaults. (20220301-1534)";
+                            problemDetails.Instance = context.HttpContext.Request.Path;
+
+                            var actionExecutingContext = context as Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext;
+
+                            if (
+                                    context.ModelState.ErrorCount > 0 &&
+                                    actionExecutingContext.ModelState.ErrorCount == context.ActionDescriptor.Parameters.Count
+                            )
+                            {
+                                problemDetails.Type = "https://localhost:51044/modelvalidationproblem";
+                                problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                                problemDetails.Title = "One or more validation errors occurred. (20220301-1542)";
+
+                                return new UnprocessableEntityObjectResult(problemDetails)
+                                {
+                                    ContentTypes = { "application/problem+json" }
+                                };
+
+                            }
+
+                            problemDetails.Status = StatusCodes.Status400BadRequest;
+                            problemDetails.Title = "One or more errors on input occurred. (20220301-1546)";
+                            return new BadRequestObjectResult(problemDetails)
+                            {
+                                ContentTypes = { "application/problem+json" }
+                            };
+
+
+
+                        };
+                    })
                 ;
 
 
