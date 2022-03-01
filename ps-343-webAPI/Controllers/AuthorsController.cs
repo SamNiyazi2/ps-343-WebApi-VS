@@ -116,6 +116,17 @@ namespace ps_343_webAPI.Controllers
                 );
 
         }
+
+
+        // 03/01/2022 08:42 am - SSN - [20220301-0839] - [001] - M06-09 - Demo: Supporting options
+        [HttpOptions]
+        public IActionResult GetAuthorsOptions()
+        {
+            Response.Headers.Add("Allow", "GET,options,POST");
+            return Ok();
+        }
+
+
     }
 
 }
