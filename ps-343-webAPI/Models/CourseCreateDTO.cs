@@ -13,17 +13,17 @@ namespace ps_343_webAPI.Models
     // IValidatableObject
     // 03/01/2022 02:46 pm - SSN - [20220301-1439] - [002] - M07-06 - Demo: Class-level input validation with a custom attribute
     // Replace IValidatableObject with CourseTitleMustBeDifferentFromDescription
-    [CourseTitleMustBeDifferentFromDescription]
+    [CourseTitleMustBeDifferentFromDescription(ErrorMessage = "Description must be different from title. (20220301-1504)")]
     public class CourseCreateDTO //: IValidatableObject
     {
 
         // 03/01/2022 01:59 pm - SSN - [20220301-1246] - [001] - M07-03 - Demo: Validating input with data annotations
 
-        [Required]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "Title is required (20220301-1502)")]
+        [MaxLength(100, ErrorMessage = "Title should not be longer than 100 characters.")]
         public string Title { get; set; }
 
-        [MaxLength(1500)]
+        [MaxLength(1500, ErrorMessage = "Description should not be longer than 1500 characters.")]
         public string Description { get; set; }
 
 

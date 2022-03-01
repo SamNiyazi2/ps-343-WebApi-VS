@@ -17,8 +17,10 @@ namespace ps_343_webAPI.ValidationAttributes
             var course = (CourseCreateDTO)validationContext.ObjectInstance;
             if ( course.Title.ToLower().Trim() == course.Description.ToLower().Trim())
             {
+                string errorMessage = string.IsNullOrWhiteSpace(ErrorMessage) ? "The provided description should be different from the title. (20220301-1444)": ErrorMessage;
+
                 return new ValidationResult(
-                        "The provided description should be different from the title. (20220301-1444)", 
+                        errorMessage,
                         new[] { nameof(CourseCreateDTO) }
                     );
             }
