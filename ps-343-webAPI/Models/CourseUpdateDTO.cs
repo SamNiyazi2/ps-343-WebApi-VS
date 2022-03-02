@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +8,17 @@ using System.Threading.Tasks;
 
 namespace ps_343_webAPI.Models
 {
-    public class CourseUpdateDTO
+    // 03/01/2022 06:04 pm - SSN - [20220301-1749] - [004] - M08-06 - Validating input when updating a resource with PUT
+    public class CourseUpdateDTO : CourseDTOBase
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+
+        // 03/01/2022 05:53 pm - SSN - [20220301-1749] - [001] - M08-06 - Validating input when updating a resource with PUT
+
+        // 03/01/2022 06:04 pm - SSN - [20220301-1749] - [004] - M08-06 - Validating input when updating a resource with PUT
+
+        //public string Title { get; set; }
+
+        [Required(ErrorMessage = "Description is required (20220301-1756)")]
+        override public string Description { get => base.Description; set => base.Description = value; }
     }
 }

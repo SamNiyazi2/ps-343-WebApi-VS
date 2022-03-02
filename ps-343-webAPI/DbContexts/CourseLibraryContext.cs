@@ -17,6 +17,11 @@ namespace CourseLibrary.API.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            // 03/01/2022 06:43 pm - SSN 
+            modelBuilder.HasDefaultSchema("ps-343");
+
+
             // seed the database with dummy data
             modelBuilder.Entity<Author>().HasData(
                 new Author()
@@ -118,8 +123,8 @@ namespace CourseLibrary.API.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string isDevelopment_string = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")??"";
-            
+            string isDevelopment_string = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
+
             bool isDevelopment = isDevelopment_string.Trim().ToLower() == "development";
 
             if (isDevelopment) optionsBuilder.UseLoggerFactory(MyLoggerFactory);

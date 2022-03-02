@@ -14,14 +14,16 @@ namespace ps_343_webAPI.ValidationAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var course = (CourseCreateDTO)validationContext.ObjectInstance;
-            if ( course.Title.ToLower().Trim() == course.Description.ToLower().Trim())
+            // 03/01/2022 06:24 pm - SSN - [20220301-1749] - [005] - M08-06 - Validating input when updating a resource with PUT
+            // CourseCreateDTO to  CourseDTOBase
+            var course = (CourseDTOBase)validationContext.ObjectInstance;
+            if (course.Title.ToLower().Trim() == course.Description.ToLower().Trim())
             {
-                string errorMessage = string.IsNullOrWhiteSpace(ErrorMessage) ? "The provided description should be different from the title. (20220301-1444)": ErrorMessage;
+                string errorMessage = string.IsNullOrWhiteSpace(ErrorMessage) ? "The provided description should be different from the title. (20220301-1444)" : ErrorMessage;
 
                 return new ValidationResult(
                         errorMessage,
-                        new[] { nameof(CourseCreateDTO) }
+                        new[] { nameof(CourseDTOBase) }
                     );
             }
 

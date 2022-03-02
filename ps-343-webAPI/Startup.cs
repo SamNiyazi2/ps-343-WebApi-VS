@@ -58,7 +58,7 @@ namespace CourseLibrary.API
 
                             if (
                                     context.ModelState.ErrorCount > 0 &&
-                                    actionExecutingContext.ModelState.ErrorCount == context.ActionDescriptor.Parameters.Count
+                                    actionExecutingContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count
                             )
                             {
                                 problemDetails.Type = "https://localhost:51044/modelvalidationproblem";
