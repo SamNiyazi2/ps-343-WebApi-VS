@@ -109,7 +109,7 @@ namespace ps_343_webAPI.Controllers
 
         // 03/01/2022 05:03 pm - SSN - [20220301-1703] - [001] - M08-03 - Demo: Updating a resource (Part1)
         [HttpPut("{courseId_string}")]
-        public ActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
+        public IActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
         {
 
             if (string.IsNullOrWhiteSpace(authorId_string) || string.IsNullOrWhiteSpace(courseId_string))
@@ -122,11 +122,28 @@ namespace ps_343_webAPI.Controllers
                 return BadRequest();
             }
 
+            if ( !courseLibraryRepository.AuthorExists(authorId))
+            {
+                return BadRequest();
+            }
+
             var courseEntity = courseLibraryRepository.GetCourse(authorId, courseId);
 
             if (courseEntity == null)
             {
-                return NotFound();
+                // 03/02/2022 09:55 am - SSN - [20220302-0947] - [001] - M08-09 - Demo: Updating with PUT
+                // return NotFound();
+                var newCourse = mapper.Map<Course>(updatedCourse);
+                newCourse.Id = courseId;
+                courseLibraryRepository.AddCourse(authorId, newCourse);
+                courseLibraryRepository.Save();
+
+                var courseToReturn = mapper.Map<CourseDTO>(newCourse);
+
+                return CreatedAtRoute("GetCourse",
+                    // new { authorId_string = authorId_string, courseId = courseToReturn.Id },
+                    new { authorId_string, courseId_string = courseToReturn.Id },
+                    courseToReturn);
 
             }
 
