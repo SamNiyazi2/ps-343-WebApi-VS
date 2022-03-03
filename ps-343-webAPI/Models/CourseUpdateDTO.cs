@@ -19,6 +19,8 @@ namespace ps_343_webAPI.Models
         //public string Title { get; set; }
 
         [Required(ErrorMessage = "Description is required (20220301-1756)")]
-        override public string Description { get => base.Description; set => base.Description = value; }
+        override public string Description { 
+            get => base.Description; 
+            set => base.Description = value; }
     }
 }

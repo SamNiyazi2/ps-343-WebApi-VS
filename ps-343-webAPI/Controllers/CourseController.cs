@@ -197,8 +197,15 @@ namespace ps_343_webAPI.Controllers
 
             var courseToPatch = mapper.Map<CourseUpdateDTO>(courseEntity);
 
-            // Todo: Add validation
-            patchDocument.ApplyTo(courseToPatch);
+            patchDocument.ApplyTo(courseToPatch, ModelState);
+
+
+            // 03/03/2022 03:17 pm - SSN - [20220303-1512] - [001] - M08-12 - Demo: validating input when updating a resource with PATCH
+            if (!TryValidateModel(courseToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
 
             mapper.Map(courseToPatch, courseEntity);
 
