@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.22" />
     <PackageReference Include="microsoft.entityframeworkcore" Version="3.1.0" />
     <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="3.1.0" />
     <PackageReference Include="microsoft.entityframeworkcore.tools" Version="3.1.0">

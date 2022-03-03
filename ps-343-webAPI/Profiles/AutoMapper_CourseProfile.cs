@@ -20,6 +20,10 @@ namespace ps_343_webAPI.Profiles
             // 03/01/2022 05:22 pm - SSN - [20220301-1703] - [005] - M08-03 - Demo: Updating a resource (Part1)
             CreateMap<CourseUpdateDTO, Course>();
 
+
+            // 03/02/2022 11:35 am - SSN - [20220302-1116] - [002] - M08-11 -Demo:  Partially updating a resource
+            CreateMap<Course, CourseUpdateDTO>();
+
         }
 
     }

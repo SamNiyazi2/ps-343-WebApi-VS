@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ps_343_webAPI.Models;
 using System;
@@ -122,7 +123,7 @@ namespace ps_343_webAPI.Controllers
                 return BadRequest();
             }
 
-            if ( !courseLibraryRepository.AuthorExists(authorId))
+            if (!courseLibraryRepository.AuthorExists(authorId))
             {
                 return BadRequest();
             }
@@ -157,9 +158,60 @@ namespace ps_343_webAPI.Controllers
 
         }
 
+
+
+        // 03/02/2022 11:23 am - SSN - [20220302-1116] - [001] - M08-11 -Demo:  Partially updating a resource
+        [HttpPatch("{courseId_string}")]
+        public ActionResult PartiallyUpdateCourse(string authorId_string, string courseId_string,
+                                                        JsonPatchDocument<CourseUpdateDTO> patchDocument)
+        {
+
+            if (patchDocument.Operations.Count == 0)
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrWhiteSpace(authorId_string) || string.IsNullOrWhiteSpace(courseId_string))
+            {
+                return BadRequest();
+            }
+
+            if (!Guid.TryParse(authorId_string, out Guid authorId) || !courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+
+            if (!Guid.TryParse(courseId_string, out Guid courseId))
+            {
+                return BadRequest();
+            }
+
+            var courseEntity = courseLibraryRepository.GetCourse(authorId, courseId);
+
+            if (courseEntity == null)
+            {
+                return NotFound();
+            }
+
+
+            var courseToPatch = mapper.Map<CourseUpdateDTO>(courseEntity);
+
+            // Todo: Add validation
+            patchDocument.ApplyTo(courseToPatch);
+
+            mapper.Map(courseToPatch, courseEntity);
+
+            courseLibraryRepository.UpdateCourse(courseEntity);
+
+            courseLibraryRepository.Save();
+
+            return NoContent();
+
+        }
+
+
+
     }
 
-
-
 }
-

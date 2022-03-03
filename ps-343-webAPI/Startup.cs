@@ -12,7 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using System;
+
 
 namespace CourseLibrary.API
 {
@@ -36,8 +38,19 @@ namespace CourseLibrary.API
                // config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
            })
+
+
+                // 03/03/2022 11:16 am - SSN - [20220302-1116] - [003] - M08-11 -Demo:  Partially updating a resource
+                // Must be added before AddXmlDataContractSerializerFormatters
+                .AddNewtonsoftJson(config =>
+                {
+                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                })
+
                 // Ad of 2.2, use:
                 .AddXmlDataContractSerializerFormatters()
+
+
 
                 // 03/01/2022 03:27 pm - SSN - [20220301-1526] - [001] - M07-09 - Demo: Customizing validation error responses
                 .ConfigureApiBehaviorOptions(config =>
@@ -83,7 +96,9 @@ namespace CourseLibrary.API
 
                         };
                     })
-                ;
+
+
+;
 
 
 
