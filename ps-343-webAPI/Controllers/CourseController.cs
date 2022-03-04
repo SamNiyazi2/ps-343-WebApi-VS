@@ -3,6 +3,10 @@ using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using ps_343_webAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -113,6 +117,9 @@ namespace ps_343_webAPI.Controllers
         public IActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
         {
 
+            var controllerContext = ControllerContext;
+
+
             if (string.IsNullOrWhiteSpace(authorId_string) || string.IsNullOrWhiteSpace(courseId_string))
             {
                 return BadRequest();
@@ -162,7 +169,7 @@ namespace ps_343_webAPI.Controllers
 
         // 03/02/2022 11:23 am - SSN - [20220302-1116] - [001] - M08-11 -Demo:  Partially updating a resource
         [HttpPatch("{courseId_string}")]
-        public ActionResult PartiallyUpdateCourse(string authorId_string, string courseId_string,
+        public IActionResult PartiallyUpdateCourse(string authorId_string, string courseId_string,
                                                         JsonPatchDocument<CourseUpdateDTO> patchDocument)
         {
 
@@ -199,6 +206,8 @@ namespace ps_343_webAPI.Controllers
 
             patchDocument.ApplyTo(courseToPatch, ModelState);
 
+            var controllerContext = ControllerContext;
+
 
             // 03/03/2022 03:17 pm - SSN - [20220303-1512] - [001] - M08-12 - Demo: validating input when updating a resource with PATCH
             if (!TryValidateModel(courseToPatch))
@@ -217,6 +226,17 @@ namespace ps_343_webAPI.Controllers
 
         }
 
+
+
+
+        // 03/03/2022 03:48 pm - SSN - [20220303-1543] - [001] - M08-13 - Demo: Returning ValidationProblems from controller actions
+
+        public override ActionResult ValidationProblem([ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            var options = HttpContext.RequestServices.GetRequiredService<IOptions<ApiBehaviorOptions>>();
+
+            return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
+        }
 
 
     }

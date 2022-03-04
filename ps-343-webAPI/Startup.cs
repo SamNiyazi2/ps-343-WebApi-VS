@@ -67,12 +67,24 @@ namespace CourseLibrary.API
                             problemDetails.Detail = "See the errors field for defaults. (20220301-1534)";
                             problemDetails.Instance = context.HttpContext.Request.Path;
 
+                            Type type_test = context.GetType();
+
                             var actionExecutingContext = context as Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext;
+
+
+                            // 03/03/2022 07:50 pm - SSN - Fix for context as ActionContent. Applies on PartiallyUpdateCourse
+                            var actionContext = context as Microsoft.AspNetCore.Mvc.ActionContext;
+
+
 
                             if (
                                     context.ModelState.ErrorCount > 0 &&
-                                    actionExecutingContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count
-                            )
+                                    (
+                                            actionExecutingContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count
+                                     ||
+                                            ((!actionContext?.ModelState.IsValid) ?? false)
+                                    )
+                                )
                             {
                                 problemDetails.Type = "https://localhost:51044/modelvalidationproblem";
                                 problemDetails.Status = StatusCodes.Status422UnprocessableEntity;

@@ -106,6 +106,13 @@ namespace ps_343_webAPI.Controllers
 
             var authorEntity = mapper.Map<Author>(newAuthor);
             CourseLibraryRepository.AddAuthor(authorEntity);
+
+            // 03/03/2022 05:10 pm - SSN - Added
+            if (!TryValidateModel(authorEntity))
+            {
+                return ValidationProblem(ModelState);
+            }
+
             CourseLibraryRepository.Save();
 
             var authorToReturn = mapper.Map<AuthorDTO>(authorEntity);
