@@ -195,7 +195,27 @@ namespace ps_343_webAPI.Controllers
 
             if (courseEntity == null)
             {
-                return NotFound();
+                // 03/03/2022 09:26 pm - SSN - [20220303-2114] - [001] - M08-14 - Demo: Upserting in PATCH
+                
+                // We can't ApplyTo CourseCreateDTO from an instance of CreateUpdateDTO.
+                CourseUpdateDTO courseToAdd = new CourseUpdateDTO();
+                
+                patchDocument.ApplyTo(courseToAdd);
+                
+                courseEntity = mapper.Map<Course>(courseToAdd);
+                courseEntity.Id = courseId;
+
+                courseLibraryRepository.AddCourse(authorId, courseEntity);
+                courseLibraryRepository.Save();
+
+                CourseDTO courseToReturn = mapper.Map<CourseDTO>(courseEntity);
+
+                return CreatedAtRoute(
+                                            "GetCourse",
+                                            new { authorId_string, courseId_string = courseToReturn.Id.ToString() },
+                                            courseToReturn
+                                     );
+
             }
 
 
