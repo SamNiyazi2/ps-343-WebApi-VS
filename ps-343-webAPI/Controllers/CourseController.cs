@@ -196,12 +196,19 @@ namespace ps_343_webAPI.Controllers
             if (courseEntity == null)
             {
                 // 03/03/2022 09:26 pm - SSN - [20220303-2114] - [001] - M08-14 - Demo: Upserting in PATCH
-                
+
                 // We can't ApplyTo CourseCreateDTO from an instance of CreateUpdateDTO.
                 CourseUpdateDTO courseToAdd = new CourseUpdateDTO();
-                
-                patchDocument.ApplyTo(courseToAdd);
-                
+
+                // 03/04/2022 08:21 am - SSN - [20220304-0819] - [001] - M08-15 - Validating input when upserting with PATCH
+                // patchDocument.ApplyTo(courseToAdd);
+                patchDocument.ApplyTo(courseToAdd, ModelState);
+
+                if (!TryValidateModel(courseToAdd))
+                {
+                    return ValidationProblem(ModelState);
+                }
+
                 courseEntity = mapper.Map<Course>(courseToAdd);
                 courseEntity.Id = courseId;
 
