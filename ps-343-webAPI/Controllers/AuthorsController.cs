@@ -134,6 +134,31 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+
+        // 03/04/2022 11:38 am - SSN - [20220304-1135] - [001] - M09-03 - Delete resource with child resources
+        [HttpDelete("{authorid_string}")]
+        public ActionResult DeleteAuthor(string authorId_string)
+        {
+
+            if (!Guid.TryParse(authorId_string, out Guid authorId))
+            {
+                return BadRequest();
+            }
+
+
+            var authorEntityToDelete = CourseLibraryRepository.GetAuthor(authorId);
+
+            if (authorEntityToDelete == null)
+            {
+                return NotFound();
+            }
+
+            CourseLibraryRepository.DeleteAuthor(authorEntityToDelete);
+            CourseLibraryRepository.Save();
+
+            return Ok();
+
+        }
     }
 
 }
