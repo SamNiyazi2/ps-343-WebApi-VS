@@ -67,7 +67,6 @@ namespace CourseLibrary.API
                             problemDetails.Detail = "See the errors field for defaults. (20220301-1534)";
                             problemDetails.Instance = context.HttpContext.Request.Path;
 
-                            Type type_test = context.GetType();
 
                             var actionExecutingContext = context as Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext;
 

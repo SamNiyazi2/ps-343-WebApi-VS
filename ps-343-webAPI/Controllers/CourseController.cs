@@ -114,11 +114,8 @@ namespace ps_343_webAPI.Controllers
 
         // 03/01/2022 05:03 pm - SSN - [20220301-1703] - [001] - M08-03 - Demo: Updating a resource (Part1)
         [HttpPut("{courseId_string}")]
-        public IActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
+        public ActionResult UpdateCourse(string authorId_string, string courseId_string, CourseUpdateDTO updatedCourse)
         {
-
-            var controllerContext = ControllerContext;
-
 
             if (string.IsNullOrWhiteSpace(authorId_string) || string.IsNullOrWhiteSpace(courseId_string))
             {
@@ -205,8 +202,6 @@ namespace ps_343_webAPI.Controllers
             var courseToPatch = mapper.Map<CourseUpdateDTO>(courseEntity);
 
             patchDocument.ApplyTo(courseToPatch, ModelState);
-
-            var controllerContext = ControllerContext;
 
 
             // 03/03/2022 03:17 pm - SSN - [20220303-1512] - [001] - M08-12 - Demo: validating input when updating a resource with PATCH
