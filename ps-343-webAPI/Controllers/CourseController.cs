@@ -249,6 +249,33 @@ namespace ps_343_webAPI.Controllers
         }
 
 
+        // 03/04/2022 08:57 am - SSN - [20220304-0855] - [001] - M09-02 - Demo: Deleting a resource
+        [HttpDelete("{courseId_string}")]
+        public ActionResult DeleteCourse(string authorId_string, string courseId_string)
+        {
+            if (!Guid.TryParse(authorId_string, out Guid authorId) || !Guid.TryParse(courseId_string, out Guid courseId))
+            {
+                return BadRequest();
+            }
+
+            if (!courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var courseEntity = courseLibraryRepository.GetCourse(authorId, courseId);
+            if (courseEntity == null)
+            {
+                return NotFound();
+            }
+
+            courseLibraryRepository.DeleteCourse(courseEntity);
+            courseLibraryRepository.Save();
+
+            return NoContent();
+
+        }
+
 
 
         // 03/03/2022 03:48 pm - SSN - [20220303-1543] - [001] - M08-13 - Demo: Returning ValidationProblems from controller actions
